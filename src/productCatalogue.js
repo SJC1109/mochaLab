@@ -48,6 +48,24 @@ class Catalogue {
       .reduce((acc, p) => acc + 1, 0);
     return noProductsAdded;
   }
+  searchProducts(product){
+    const result = {type: "Search", MarkedProducts: []}
+    if (product.price !== undefined){
+      result.MarkedProducts = this.products
+      .filter((p) => p.price<=product.price)
+       .map((p) =>p.id)
+      return result;
+    }
+    if(product.keyword !== undefined){
+      result.MarkedProducts = this.products
+      .filter((p) => p.name.search(product.keyword) >= 0 )
+      .map((p) => p.id)
+      return result;
+    }
+    else if(!(product.price || product.keyword)){
+      throw new Error("Bad Batch");
+  }
+}
 }
 module.exports = Catalogue;
 
